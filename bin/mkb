@@ -1,15 +1,53 @@
 #!/usr/bin/env node
 
-var program = require('commander');
-program.version('0.0.1')
+var program = require('commander'),
+  fs = require('fs'),
+  path = require('path'),
+  pkg = require('../package.json');
+
+var cwd = process.cwd();
+
+
+program.version(pkg.version)
+  .option('--verbose', 'show verbose')
+  .option('--debug', 'debug mode')
+  .option('-P, --proxy <express proxy app>', 'express app/middleware for data proxy')
+  .option('-p, --port <port>', 'running port, default run in 8888');
+
 
 program
-    .command('server')
-    .description('start proxy server')
-    .action(function(options) {
-        require('../lib/server').startOnPort(8888);
+  .command('server [<static folder>]')
+  .description('start proxy server')
+  .action(function(folder) {
+    var folder = folder ? path.resolve(cwd, folder) : cwd;
+    var proxyFile = this.proxy;
+
+    var proxy = null;
+    if (proxyFile) {
+      proxyFile = path.resolve(cwd, proxyFile);
+
+      if (fs.existsSync(proxyFile)) {
+        try {
+          proxy = require(proxyFile);
+        } catch (e) {
+          console.warn('WARN: Error when read proxy:' + proxyFile, e);
+        }
+      } else {
+        console.warn('WARN: Can not find proxy:' + proxyFile);
+      }
+    }
+
+    var app = require('../lib/server')({
+      static: folder,
+      proxy: proxy
     });
+
+    var port = this.port || 8888;
+    app.listen(port);
+
+  });
 
 
 program.parse(process.argv);
+
 if (program.args.length === 0) program.help()

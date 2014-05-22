@@ -1,4 +1,4 @@
-(function () {
+(function() {
 
     var callbacksCount = 1;
     var callbacks = {};
@@ -10,7 +10,7 @@
         NVCacheTypeCritical: 3,
         NVCacheTypeDaily: 4,
 
-        send_message: function (method, args, callback) {
+        send_message: function(method, args, callback) {
             // console.log('send_message', arguments);
             var hasCallback = callback && typeof callback == 'function';
             var callbackId = hasCallback ? callbacksCount++ : 0;
@@ -24,37 +24,39 @@
             document.body.appendChild(ifr);
             ifr.contentWindow.location.href = 'js://_?method=' + method + '&args=' + encodeURIComponent(args) + '&callbackId=' + callbackId;
             // ifr.parentNode.removeChild(ifr);
-            setTimeout(function () {
+            setTimeout(function() {
                 ifr.parentNode.removeChild(ifr);
             }, 0);
 
             return callbackId;
         },
 
-        callback:function(callbackId, retValue) {
+        callback: function(callbackId, retValue) {
             try {
                 var callback = callbacks[callbackId];
                 if (!callback) return;
                 callback.apply(null, [retValue]);
                 delete callbacks[callbackId];
-            } catch(e) {alert(e);}
+            } catch (e) {
+                alert(e);
+            }
         },
 
-        ga: function (category, action, label, value, extra) {
+        ga: function(category, action, label, value, extra) {
             DPApp.send_message('ga', {
                 category: category,
                 action: action,
                 label: label || '',
                 value: value || 0,
                 extra: extra || {}
-            }, function () {});
+            }, function() {});
         },
 
         ajax: function(opts) {
             var url = opts.url;
             var data = opts.data || {};
-            var success = opts.success || function () {};
-            var fail = opts.fail || function () {};
+            var success = opts.success || function() {};
+            var fail = opts.fail || function() {};
 
             var params = [];
             for (var p in data) {
@@ -64,7 +66,7 @@
             }
 
             if (params.length) {
-                url += url.indexOf('?') == -1 ?  "?" : "&";
+                url += url.indexOf('?') == -1 ? "?" : "&";
                 url += params.join('&');
             }
 
@@ -94,7 +96,7 @@
         },
 
         action: {
-            get: function (params, callback) {
+            get: function(params, callback) {
                 DPApp.send_message('getURLActionObjects', {
                     params: $.isArray(params) ? params : [params]
                 }, function(objs) {
@@ -125,22 +127,22 @@
                 DPApp.send_message('openURLAction', {
                     url: url,
                     params: params
-                }, function () {});
+                }, function() {});
             }
         },
 
         getEnv: function(callback) {
-            DPApp.send_message('getEnv', {}, function (env) {
+            DPApp.send_message('getEnv', {}, function(env) {
                 window.DPAppEnv = window.DPAppEnv || {
-                    parseQuery: function () {
+                    parseQuery: function() {
                         // query not set
                         if (DPAppEnv.query == '${query}') {
                             DPAppEnv.query = null;
-                            return ;
+                            return;
                         }
 
                         var params = {};
-                        DPAppEnv.query.split('&').forEach(function (param) {
+                        DPAppEnv.query.split('&').forEach(function(param) {
                             var kv = param.split('=');
                             var k = kv[0];
                             var v = kv.length > 0 ? kv[1] : '';
@@ -158,13 +160,13 @@
             });
         },
 
-        startRefresh: function () {
+        startRefresh: function() {
             // override this method plz
         },
-        stopRefresh: function () {
+        stopRefresh: function() {
             DPApp.send_message('stopRefresh', {}, function() {});
         },
-        genUUID: function (dpid) {
+        genUUID: function(dpid) {
             dpid = dpid || DPAppEnv.dpid;
             var requid = CryptoJS.MD5(dpid + (new Date().getTime()) + (Math.random()));
             // console.log(requid.toString());
