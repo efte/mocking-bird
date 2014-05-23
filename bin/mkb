@@ -16,7 +16,7 @@ program.version(pkg.version)
 
 
 program
-  .command('server [<static folder>]')
+  .command('server [static-folder]')
   .description('start proxy server')
   .action(function(folder) {
     var folder = folder ? path.resolve(cwd, folder) : cwd;
