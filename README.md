@@ -31,7 +31,7 @@ var app = baseProxy('real_server_address', {
     "user-agent": "MockClient 1.1 (proxy 1.6.0 appstore; iPhone 5.1 x86_64)",
   },
   jsonfy: function(data, callback) {
-     // data is "{ code: 200, data: {}}", do transform and jsonfy here
+     // if data is "{ code: 200, data: {}}", do transform and jsonfy here
      var json;
      try {
         json = JSON.parse(data);
