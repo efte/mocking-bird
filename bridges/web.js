@@ -15,9 +15,9 @@
                 },
                 timeout: 0,
                 processData: true
-            }, options || {}),
+            }, options || {});
 
-            if (!settings.url) settings.url = window.location.toString()
+            if (!settings.url) settings.url = window.location.toString();
 
             var dataType = settings.dataType,
                 ajaxSuccess = settings.success,
@@ -29,10 +29,8 @@
                 setHeader = function(name, value) {
                     headers[name.toLowerCase()] = [name, value]
                 },
-                protocol = /^([\w-]+:)\/\//.test(settings.url) ? RegExp.$1 : window.location.protocol,
                 xhr = new window.XMLHttpRequest(),
-                nativeSetHeader = xhr.setRequestHeader,
-                abortTimeout;
+                nativeSetHeader = xhr.setRequestHeader;
 
             setHeader('Accept', mime || '*/*');
             if (mime = settings.mimeType || mime) {
@@ -61,10 +59,11 @@
                             error = e
                         }
 
-                        if (error) ajaxError(error, 'parsererror', xhr, settings)
+                        if (error) ajaxError && ajaxError(error, 'parsererror', xhr, settings)
                         else ajaxSuccess(result, xhr, settings)
                     } else {
-                        ajaxError(xhr.statusText || null, xhr.status ? 'error' : 'abort', xhr, settings)
+                        console.log(xhr.status);
+                        ajaxError && ajaxError(xhr.statusText || null, xhr.status ? 'error' : 'abort', xhr, settings)
                     }
                 }
             }
@@ -603,7 +602,7 @@
         }
 
         return objects;
-    },
+    }
 
 
     function isEmptyObject(obj) {
