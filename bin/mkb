@@ -37,10 +37,29 @@ program
       }
     }
 
+    var extFile = this.extApp;
+    var extApp = null;
+    if (extFile) {
+      extFile = path.resolve(cwd, extFile);
+      if (fs.existsSync(extFile)) {
+        try {
+          extApp = require(extFile);
+        } catch (e) {
+          console.warn('WARN: Error when read extApp:' + extFile, e);
+        }
+      } else
+        console.warn('WARN: Can not find extension app:' + extFile);
+    }
+
+
     var app = require('../lib/server')({
       static: folder,
-      proxy: proxy
+      proxy: proxy,
+      verbose: true === this.debug,
+      extApp: extApp
     });
+
+    app.set('debug', true === this.debug);
 
     var port = this.port || 8888;
     app.listen(port);

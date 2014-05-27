@@ -1,5 +1,6 @@
 # Mocking Bird
 
+Mocking server to work with hybird application, working with proxy server that using express3.x.
 
 ## Installation
 
@@ -17,7 +18,7 @@ mkb server [static folder] [-p|--port <server running port>] [-P|--proxy <js fil
 
 ### Used in code
 
-=proxy.js=
+#### Proxy =proxy.js=
 
 ``` javascript
 var mkb = require('mocking-bird');
@@ -51,4 +52,3 @@ Then you can use `proxy.js` as proxy provider to the mocking server:
 ``` bash
 mkb server public -P proxy.js
 ```
-

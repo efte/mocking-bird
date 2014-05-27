@@ -62,7 +62,6 @@
                         if (error) ajaxError && ajaxError(error, 'parsererror', xhr, settings)
                         else ajaxSuccess(result, xhr, settings)
                     } else {
-                        console.log(xhr.status);
                         ajaxError && ajaxError(xhr.statusText || null, xhr.status ? 'error' : 'abort', xhr, settings)
                     }
                 }
@@ -460,6 +459,9 @@
 
 
     window.DPApp = {
+        send_message: function(method, args, callback) {
+            console.log(method, args, callback);
+        },
         ga: function(category, action, label, value, extra) {
             DPApp.send_message('ga', {
                 category: category,
@@ -471,23 +473,22 @@
         },
 
         ajax: function(opts) {
+            var options = extend({}, opts);
             var data = opts.data;
             var url = encodeURIComponent(opts.url + "?" + toQueryString(data));
+            delete options.modelName;
+
+            options.url = '/proxy?url=' + url;
+
             var modelName = opts.modelName;
-            var success = opts.success;
-            var fail = opts.fail;
+            if (modelName) {
+                options.headers = options.headers || {};
+                options.headers['pragma-modelname'] = modelName;
+            }
 
-            console.log(url);
+            options.error = options.error || options.fail;
 
-            var xhr = $ajax({
-                url: "/proxy?url=" + url,
-                data: data,
-                headers: {
-                    "pragma-modelname": modelName
-                },
-                success: success,
-                error: fail
-            });
+            var xhr = $ajax(options);
         },
 
         action: {
