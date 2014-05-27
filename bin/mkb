@@ -7,12 +7,12 @@ var program = require('commander'),
 
 var cwd = process.cwd();
 
-
 program.version(pkg.version)
   .option('--verbose', 'show verbose')
   .option('--debug', 'debug mode')
   .option('-P, --proxy <express proxy app>', 'express app/middleware for data proxy')
-  .option('-p, --port <port>', 'running port, default run in 8888');
+  .option('-p, --port <port>', 'running port, default run in 8888')
+  .option('-e, --extApp <extApp>', 'express extension will be hooked into the mock server');
 
 
 program
