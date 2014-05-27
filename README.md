@@ -16,6 +16,8 @@ npm install mocking-bird -g
 mkb server [static folder] [-p|--port <server running port>] [-P|--proxy <js file exports express app as proxy>]
 ```
 
+See more help info by typing  ```mkb -h```
+
 ### Used in code
 
 #### Proxy =proxy.js=
