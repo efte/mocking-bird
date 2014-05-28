@@ -1,5 +1,6 @@
 module.exports = require('./lib/server');
 module.exports.baseProxy = require('./lib/proxy/base');
+module.exports.directProxy = require('./lib/proxy/direct');
 
 
 module.exports.afterRender = function(req, res) {

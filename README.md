@@ -29,7 +29,7 @@ var baseProxy = mkb.baseProxy;
 
 // create a proxy application
 
-var app = baseProxy('real_server_address', {
+var app = baseProxy('real_server_address:8010', {
   headers: {
     "user-agent": "MockClient 1.1 (proxy 1.6.0 appstore; iPhone 5.1 x86_64)",
   },
