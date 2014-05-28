@@ -3,14 +3,16 @@
 var program = require('commander'),
   fs = require('fs'),
   path = require('path'),
-  pkg = require('../package.json');
+  pkg = require('../package.json'),
+  directProxy = require('../lib/proxy/direct');
+
 
 var cwd = process.cwd();
 
 program.version(pkg.version)
   .option('--verbose', 'show verbose')
   .option('--debug', 'debug mode')
-  .option('-P, --proxy <express proxy app>', 'express app/middleware for data proxy')
+  .option('-P, --proxy <express proxy app>', 'express app/middleware for data proxy, or host')
   .option('-p, --port <port>', 'running port, default run in 8888')
   .option('-e, --extApp <extApp>', 'express extension will be hooked into the mock server');
 
@@ -33,7 +35,7 @@ program
           console.warn('WARN: Error when read proxy:' + proxyFile, e);
         }
       } else {
-        console.warn('WARN: Can not find proxy:' + proxyFile);
+        proxy = directProxy(this.proxy);
       }
     }
 
