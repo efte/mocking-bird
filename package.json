@@ -1,6 +1,6 @@
 {
   "name": "mocking-bird",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Full stack hybrid app development framework",
   "main": "index.js",
   "scripts": {
