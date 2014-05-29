@@ -12,15 +12,28 @@ npm install mocking-bird -g
 
 ### Used in command line
 
-```
-mkb server [static folder] [-p|--port <server running port>] [-P|--proxy <js file exports express app as proxy>]
+```bash
+mkb server [static folder] [-p|--port <server running port>] [-P|--proxy <js file exports express app as proxy|or hostname for directly delegate>]
 ```
 
-See more help info by typing  ```mkb -h```
+See more help info by typing  `mkb -h`
+
+Only run as static server with `web.js` injection:
+
+```bash
+mkb server .
+```
+
+Run with proxy all missing request to `www.target.com`:
+
+```bash
+mkb server . -P www.target.com
+```
+
 
 ### Used in code
 
-#### Proxy =proxy.js=
+#### Create your custom proxy
 
 ``` javascript
 var mkb = require('mocking-bird');
