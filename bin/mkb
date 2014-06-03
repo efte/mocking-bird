@@ -14,6 +14,7 @@ program.version(pkg.version)
   .option('--debug', 'debug mode')
   .option('-P, --proxy <express proxy app>', 'express app/middleware for data proxy, or host')
   .option('-p, --port <port>', 'running port, default run in 8888')
+  .option('-i, --injection <file>', 'injecting files')
   .option('-e, --extApp <extApp>', 'express extension will be hooked into the mock server');
 
 
@@ -53,7 +54,8 @@ program
         console.warn('WARN: Can not find extension app:' + extFile);
     }
 
-
+    var injectFile = this.injection;
+    
     var app = require('../lib/server')({
       static: folder,
       proxy: proxy,

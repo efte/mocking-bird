@@ -552,8 +552,13 @@
             dpid = dpid || DPAppEnv.dpid || 0;
             var requid = md5(dpid + (new Date().getTime()) + (Math.random()));
             return requid.toString();
-        }
+        },
+        setTitle: function(title) {
+            document.getElementsByTagName('title').innerHTML = title;
+        },
+        takePhoto: function (callback) {
 
+        }
     };
 
 
